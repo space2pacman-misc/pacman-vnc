@@ -2,7 +2,8 @@ let net = require("net");
 let fs = require("fs");
 let express = require("express");
 let app = express();
-let file = fs.createWriteStream("tcp.mp4");
+
+//let file = fs.createWriteStream("tcp.mp4");
 let server = net.createServer(socket => {
 	socket.on("data", data => {
 		file.write(data);
@@ -11,15 +12,15 @@ let server = net.createServer(socket => {
 
 server.listen(4444, "127.0.0.1");
 
-// let fileChunk = fs.createReadStream("tcp.mp4");
-// let headers = {
-// 	"Content-Type": "video/mp4"
-// }
+let headers = {
+	"Content-Length": fs.statSync("tcp.mp4").size,
+	"Content-Type": "video/mp4"
+}
 
-// app.get("/stream", (req, res) => {
-// 	res.writeHead(206, headers);
+app.get("/stream", (req, res) => {
+	res.writeHead(200, headers);
 
-// 	fileChunk.pipe(res);
-// })
+	fs.createReadStream("tcp.mp4").pipe(res);
+})
 
-// app.listen(7777);
+app.listen(7777);
