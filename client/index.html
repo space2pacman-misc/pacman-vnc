@@ -11,14 +11,15 @@
 	<script src="js/socket.io.min.js"></script>
 	<script>
 		let socket = io("http://localhost:8888");
+		let img = document.querySelector(".screenshot");
 
 		socket.on("stream", data => {
-			// let img = document.querySelector(".screenshot");
 
-			// img.src = 'data:image/jpeg;base64,' + data;
-			console.log(data)
+			img.src = 'data:image/jpeg;base64,' + data;
+			console.log(img.src)
 			//console.log(data)
-			//socket.close();
+			//console.log(data)
+			socket.close();
 		})
 	</script>
 </body>

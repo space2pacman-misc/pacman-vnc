@@ -1,0 +1,22 @@
+let fs = require("fs");
+const dgram = require('dgram');
+const server = dgram.createSocket('udp4');
+
+let file = fs.createWriteStream("udp.mp4");
+
+server.on('error', (err) => {
+  console.log(`server error:\n${err.stack}`);
+  server.close();
+});
+
+server.on('message', (msg, rinfo) => {
+  console.log(`server from ${rinfo.address}:${rinfo.port}`);
+  file.write(msg);
+});
+
+server.on('listening', () => {
+  const address = server.address();
+  console.log(`server listening ${address.address}:${address.port}`);
+});
+
+server.bind(4444);

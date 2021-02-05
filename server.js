@@ -1,12 +1,17 @@
 let net = require("net");
 let fs = require("fs");
+let cors = require("cors");
 let express = require("express");
 let app = express();
+
+app.use(cors());
 
 let file = fs.createWriteStream("tcp.mp4");
 let server = net.createServer(socket => {
 	socket.on("data", data => {
 		file.write(data);
+		//console.log(data)
+		console.log(fs.statSync("tcp.mp4").size)
 	})
 })
 
